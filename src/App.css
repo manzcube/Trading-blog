@@ -1,0 +1,8 @@
+input::file-selector-button {
+    background-color: rgb(210, 208, 208);
+    border: 0;
+    border-radius: 1ch;
+    padding: 0.5ch;
+    margin-right: 1ch;
+    color: rgb(8, 8, 8);
+}
