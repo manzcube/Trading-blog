@@ -11,7 +11,18 @@ const Bookmarked = (props) => {
   
   return user ? (
     <div>
-      bookemarkessdfg
+      <span className='flex w-full font-bold px-10 text-xl my-20'>Saved Posts</span>
+        {/* {posts.map(post => (
+        <Post
+          key={post.id}
+          postId={post.id}
+          title={post.title}
+          description={post.description}
+          date={post.date}
+          author={post.author}
+          image={post?.imageURL}
+        />
+      ))} */}
     </div>
   ) : <SignInBadge />
 }

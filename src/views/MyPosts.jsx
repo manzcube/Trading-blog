@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { getDocs, collection } from 'firebase/firestore'
+import { getDocs, collection, where, query } from 'firebase/firestore'
 import { db } from '../config/firebase-config'
-import postcss from 'postcss'
 import Post from '../components/Post'
 import SignInBadge from '../components/SignInBadge'
 
@@ -14,21 +13,27 @@ const MyPosts = (props) => {
     
         const getData = async () => {
           try {
-            const data = await getDocs(collection(db, 'posts'))
+            const q = query(collection(db, 'posts'), where("author", "==", user))
+            const data = await getDocs(q)
             const dataArray = data.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-            dataArray.map(post => post.author == user)
             console.log(dataArray)
-            setPosts(dataArray)
+
+            if (!posts.length) {
+              setPosts(dataArray)
+            }
+
           } catch (error) {
             console.log(error)
           }
         }
         getData()
-      }, [props.user])
+
+      }, [props.user, posts])
 
 
   return user ? (
     <div>
+      <span className='flex w-full font-bold px-10 text-xl my-20'>My Posts</span>
         {posts.map(post => (
         <Post
           key={post.id}

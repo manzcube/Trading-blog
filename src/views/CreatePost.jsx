@@ -66,18 +66,18 @@ const CreatePost = (props) => {
 
   return user ? (
     <div className='flex justify-center items-center py-16 h-full'>
-        <form onSubmit={onSubmit} className='bg-white shadow-md rounded px-8 w-2/4 py-10 space-y-8 flex flex-col justify-between'>
+        <form onSubmit={onSubmit} className='bg-white shadow-md rounded px-8 w-2/4 py-10 space-between flex flex-col justify-between'>
             <title className='flex justify-center text-slate-500 font-bold text-lg'>Create a new Post</title>
 
             <FormInput 
                 value={title}
-                label='Title*'
+                label='Title'
                 inputProps={{ type: 'text', name: 'title', placeholder: 'Your title', id: 'title' }}
                 onChange={onChange}
             />
 
-            <div>
-                <label htmlFor='file-upload' className="block text-grey-700 text-sm font-bold mb-2">
+            <div className='mb-4'>
+                <label htmlFor='file-upload' className="block text-gray-500 text-sm font-bold mb-2">
                     Image
                 </label>
                 <input 
@@ -85,12 +85,12 @@ const CreatePost = (props) => {
                     required
                     id='file-upload'
                     onChange={e => { setPicture(e.target.files[0]) }}
-                    className={`shadow appearance-none  rounded w-full py-2 px-3 mt-2 text-gray-700 bg-gray-100 leading-tight focus:outline-none focus:shadow-outline`}
+                    className={`shadow appearance-none rounded w-full py-2 px-3 mt-2 text-gray-700 bg-gray-100 leading-tight focus:outline-none focus:shadow-outline`}
                 />                
             </div>
 
-            <div>
-                <label htmlFor="description" className='block text-grey-700 text-sm font-bold mb-2'>Description*</label>
+            <div className='mb-4'>
+                <label htmlFor="description" className='block text-gray-500 text-sm font-bold mb-2'>Description</label>
                 <textarea 
                     required
                     className='shadow appearance-none bg-gray-100 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' 

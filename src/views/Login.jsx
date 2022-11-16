@@ -47,8 +47,8 @@ const Login = (props) => {
   }
 
   return (
-    <div className='w-full max-w-md m-auto'>
-      <form onSubmit={onSubmit} className='bg-white shadow-md rounded px-8 pt-6 mb-4'>
+    <div className='w-full max-w-md mx-auto mt-20'>
+      <form onSubmit={onSubmit} className='bg-white shadow-md rounded px-8 py-10 mb-4 flex flex-col'>
         <FormInput 
           value={email}
           label='Email'
