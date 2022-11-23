@@ -1,62 +1,61 @@
-import { deleteDoc, doc, onSnapshot } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Button from '../components/Button';
-import { db } from '../config/firebase-config';
+import { toast } from 'react-toastify';
+
+// Firebase
+import { deleteDoc, doc, onSnapshot } from 'firebase/firestore';
+import { deleteObject, ref } from 'firebase/storage'
+import { storage, db } from '../config/firebase-config';
+
+// Components
 import VerifyAuth from '../components/VerifyAuth';
 import SignInBadge from '../components/SignInBadge';
+import SinglePost from '../components/SinglePost';
 
 const ViewPost = (props) => {
   const params = useParams()
   const navigate = useNavigate()
   const [user, setUser] = useState(props.user)
-
   const [del, setDel] = useState(false)
   const [postData, setPostData] = useState({})
   const { imageURL, title, description, author, date } = postData
 
-  console.log('author and user', author, user)
-
   useEffect(() => {
     setUser(props.user)
-    onSnapshot(doc(db, "posts", params.id), doc => {
-      if (doc.data()) {
-        setPostData(doc.data())
-      } else {
-        console.log('Theres no post with such id dumbass')
-      }
-    })
+    try {
+      onSnapshot(doc(db, "posts", params.id), doc => { // Retrieve info from single doc
+        if (doc.data()) {
+          setPostData(doc.data())
+        } 
+      })
+    } catch(err) {
+      toast.error(err.message)
+    }    
   }, [params.id, props.user])
 
+  // Handle post remove
   const deletePost = async () => {
-    await deleteDoc(doc(db, "posts", params.id))
-    setDel(false)
-    navigate('/dashboard')
-    console.log('Successfully deleetd')
-  }
-
-  const changeDel = () => {
-    setDel(true) 
+    await deleteDoc(doc(db, "posts", params.id)) // Delete doc
+    const delImgRef = ref(storage, imageURL) // Delete image
+    deleteObject(delImgRef).then(() => {
+      setDel(false)
+      navigate('/dashboard')  // Return to dashboard
+      toast.success('Post Deleted!')
+    }).catch(err => {
+      toast.error(err.message)
+    }) 
   }
 
 
   return user ? (
     <div className='flex flex-col justify-center items-center py-16 h-full mx-10 overflow-x-scroll'>      
-      <div className='container max-w-3xl flex flex-row space-y-3 mx-10 mb-14 bg-white'>
-        <div className="w-full">
-          <img src={imageURL} alt="image" className='h-96 w-full object-cover' />          
-          <div className="p-5 w-full">
-              <div className="flex justify-end mb-3">
-                  <p>{date}</p>
-              </div>
-              <p className="block mt-1 text-lg leading-tight font-bold text-black">{title}</p>
-              <p className="m-3 h-full max-w-2xl text-slate-500">{description}</p>
-              <div className="flex justify-end h-full bottom-0 mt-5">
-                  <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">BY {author}</div>
-              </div>                                      
-          </div>
-        </div>             
-      </div>
+      <SinglePost
+        imageURL={imageURL}
+        author={author}
+        description={description}
+        title={title}
+        date={date} 
+      />
       <div className="w-full flex justify-end ViewPostButtons">
         <button download className='flex items-center mx-4'>
           Download image
@@ -69,7 +68,7 @@ const ViewPost = (props) => {
           {del ? (
             <button  className='bg-red-500 text-white py-2 px-6 my-5 mx-4 rounded hover:bg-red-500 hover:scale-95' onClick={deletePost}>Sure?</button>
           ) : (
-            <button className='bg-red-500 text-white py-2 px-6 my-5 mx-4 rounded hover:bg-red-500 hover:scale-95' onClick={changeDel}>Delete</button>
+            <button className='bg-red-500 text-white py-2 px-6 my-5 mx-4 rounded hover:bg-red-500 hover:scale-95' onClick={() => setDel(true)}>Delete</button>
           )}
         </VerifyAuth>
       </div>

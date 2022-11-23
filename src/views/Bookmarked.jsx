@@ -1,30 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
-import SignInBadge from '../components/SignInBadge'
-
-const Bookmarked = (props) => {
-  const [user, setUser] = useState(props.user)
-
-  useEffect(() => {
-    setUser(props.user)
-  }, [props.user])
-  
-  return user ? (
-    <div>
-      <span className='flex w-full font-bold px-10 text-xl my-20'>Saved Posts</span>
-        {/* {posts.map(post => (
-        <Post
-          key={post.id}
-          postId={post.id}
-          title={post.title}
-          description={post.description}
-          date={post.date}
-          author={post.author}
-          image={post?.imageURL}
-        />
-      ))} */}
+const Bookmarked = () => {
+  return (
+    <div className='flex flex-col md:flex-row p-20'>
+      <img className='flex object-cover' src={require('../resources/w.png')} />
+      <h1 className='text-3xl md:text-8xl'>Coming soon! We are working on this</h1>
     </div>
-  ) : <SignInBadge />
+  )
 }
 
 export default Bookmarked

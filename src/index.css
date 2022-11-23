@@ -13,6 +13,21 @@ body {
     height: 100vh;
 }
 
+.Toastify__toast--error {
+    border: 1px solid #EB5757;
+    color: #ac2727 !important;
+    border-radius: 5px !important;
+    background: #FAE1E2 !important;
+}
+
+.Toastify__toast--success {
+    border: 1px solid #54dd54;
+    color: #259634 !important;
+    border-radius: 5px !important;
+    background: #e7fae1 !important;
+}
+
+
 @media (max-width: 460px) {
     .ViewPostButtons {
         flex-direction: column;

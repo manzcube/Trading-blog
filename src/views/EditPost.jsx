@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import { collection, setDoc, onSnapshot, doc } from "firebase/firestore";
+import { useNavigate, useParams } from 'react-router-dom';
+import { v4 } from 'uuid'
+import { toast } from 'react-toastify';
+
+// Firebase 
+import { setDoc, onSnapshot, doc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { db, storage } from '../config/firebase-config'
+
+// Components
 import FormInput from '../components/FormInput';
 import SignInBadge from '../components/SignInBadge';
-
-import { v4 } from 'uuid'
-
-import { db } from '../config/firebase-config'
-import { storage } from '../config/firebase-config';
-import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../components/Button';
 
+
 const EditPost = (props) => {
-    const [user, setUser] = useState(props.user)
-    const [picture, setPicture] = useState(null)
     const navigate = useNavigate()
     const params = useParams()
-
+    const [user, setUser] = useState(props.user)
+    const [picture, setPicture] = useState(null)    
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -25,14 +27,15 @@ const EditPost = (props) => {
 
 
     useEffect(() => {
-        setUser(props.user)
-        onSnapshot(doc(db, "posts", params.id), doc => {
+        setUser(props.user) // Update user
+        onSnapshot(doc(db, "posts", params.id), doc => { // Get the doc we wanna update
             if (doc.data()) {
-                setFormData(doc.data())
+                setFormData(doc.data())  // If the post exists retrieve it
             }
         })
     }, [props.user, params.id])
 
+    // OnChange listener for inputs
     const onChange = (e) => {
         setFormData((prevState) => ({
           ...prevState,
@@ -44,7 +47,7 @@ const EditPost = (props) => {
         e.preventDefault()
         try {  
             if (picture) {
-                const imageRef = ref(storage, `images/${picture.name + v4()}`)
+                const imageRef = ref(storage, `images/${picture.name + v4()}`)  // Logic for image uploading
                 uploadBytes(imageRef, picture).then(() => {
                     console.log('image uploaded') 
                     getDownloadURL(imageRef).then(async url => {
@@ -55,8 +58,8 @@ const EditPost = (props) => {
                             description,
                             imageURL: url,
                         }).then(() => {
-                            console.log('post updated')
                             navigate(`/posts/${params.id}`)
+                            toast.success('Successfully updated!')
                         })  
                     })
                 })   
@@ -68,20 +71,20 @@ const EditPost = (props) => {
                     date, 
                     imageURL
                 }).then(() => {
-                    console.log('post updated')
                     navigate(`/posts/${params.id}`)
+                    toast.success('Successfully updated!')
                 })
             }
             
         } catch (err) {
-            console.log(err)
+            toast.error(err.message)
         }
         
     }
 
   return (user && formData) ? (
     <div className='flex justify-center items-center py-16 h-full'>
-        <form onSubmit={onSubmit} className='bg-white shadow-md rounded px-8 w-2/4 py-10 space-y-8 flex flex-col justify-between'>
+        <form onSubmit={onSubmit} className='bg-white shadow-md rounded px-8 mx-10 w-full md:w-2/4 py-10 space-y-8 flex flex-col justify-between'>
             <title className='flex justify-center text-slate-500 font-bold text-lg'>Edit a Post</title>
 
             <FormInput 

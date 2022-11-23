@@ -3,11 +3,15 @@ import './App.css';
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 
+// Toast
+import { toast, ToastContainer, Zoom } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // Firebase
 import { auth } from './config/firebase-config';
-import { onAuthStateChanged } from 'firebase/auth';
-import { signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 
+// Components
 import Navbar from './components/Navbar'
 
 // Views
@@ -30,23 +34,36 @@ function App() {
     })
   }, [auth])
 
+  // Signing out logic
   const Logout = async () => {
     await signOut(auth)
       .then(() => {
         setUser(auth?.currentUser)
         navigate('/login')
-      })  // Need to add a session/local storage cleaner
-      .catch((err) => console.log(err))
-    console.log(auth)
+        toast.success('Successfully logged out!')
+        localStorage.clear()
+      }).catch((err) => console.log(err))
   }
 
   return (
-    <div className="App">
+    <div className="App pb-72">      
       <Navbar
         email={auth.currentUser?.email}
         logoutFunc={Logout}
         user={user}
       />
+      <div>
+        <ToastContainer
+          limit={1}
+          position="top-center"
+          autoClose={2500}
+          hideProgressBar={true}
+          closeButton={false}
+          closeOnClick
+          transition={Zoom}
+          pauseOnFocusLoss={false}
+        />
+      </div>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login user={user} />} />
@@ -56,7 +73,7 @@ function App() {
         <Route path='/create' element={<CreatePost user={user} />} />
         <Route path='/edit/:id' element={<EditPost user={user} />} />
         <Route path='/posts/:id' element={<ViewPost user={user} />} />
-
+        <Route path='/*' element={<Home />} />
       </Routes>
     </div>
   );

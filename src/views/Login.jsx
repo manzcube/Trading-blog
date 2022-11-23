@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+
+// Firebase
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../config/firebase-config'
 
+// Components
 import FormInput from '../components/FormInput'
 import Button from '../components/Button'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { useNavigate } from 'react-router-dom'
+
+// Middleware
 import checkLogInForm from '../middleware/checkLogInForm'
 
 const Login = (props) => {
+
+  // Peeces of state
   let navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: '',
@@ -15,6 +23,8 @@ const Login = (props) => {
   })
   const { email, password } = formData
 
+
+  // OnChange for input fields
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -22,6 +32,7 @@ const Login = (props) => {
     }))
   }
 
+  // Check is user is already logged in
   useEffect(() => {
     if (props.user) {
       return navigate(-1)
@@ -31,18 +42,20 @@ const Login = (props) => {
   const onSubmit = async (e) => {
     e.preventDefault()
     if (props.user) {
-      return navigate('/')
+      navigate('/')
+      toast.success(`You're already logged in`)      
     }    
     else if (checkLogInForm(formData)) {
         await signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             const user = userCredential.user
-            console.log(user)
+            toast.success(`Successfully logged in ${user?.email}`)
           }).catch((err) => {
-            console.log(err)
+            console.log('Something went wrong')
+            toast.error(err.message)
           })
     } else {
-      console.log('some parameter in the form is incorrect')
+      toast.error('Email or Password incorrect!')
     } 
   }
 

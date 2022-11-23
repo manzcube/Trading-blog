@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import SignInBadge from '../components/SignInBadge'
-
-
-import Post from '../components/Post'
 import { useNavigate } from 'react-router-dom'
+
+// Firebase 
 import { collection, getDocs } from 'firebase/firestore'
-import { listAll, ref, getDownloadURL } from 'firebase/storage'
-import { storage } from '../config/firebase-config'
 import { db } from '../config/firebase-config'
+
+// Components
+import SignInBadge from '../components/SignInBadge'
+import Post from '../components/Post'
 
 const Dashboard = (props) => {
   const [user, setUser] = useState(props.user)
@@ -16,13 +16,12 @@ const Dashboard = (props) => {
 
 
   useEffect(() => {
-    setUser(props.user)
-
+    setUser(props.user) // Update user
     const getData = async () => {
       try {
-        const data = await getDocs(collection(db, 'posts'))
-        const dataArray = data.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-        setPosts(dataArray)
+        const data = await getDocs(collection(db, 'posts')) // Get all posts
+        const dataArray = data.docs.map(doc => ({ id: doc.id, ...doc.data() })) // Assign id's for posst
+        setPosts(dataArray) 
       } catch (error) {
         console.log(error)
       }
@@ -42,8 +41,6 @@ const Dashboard = (props) => {
         </div>
         <p className="text-slate-500 group-hover:text-white text-sm">Create a new report from your recent trades.</p>
       </button>
-   
-
       {posts.map(post => (
         <Post
           key={post.id}
@@ -53,6 +50,7 @@ const Dashboard = (props) => {
           date={post.date}
           author={post.author}
           image={post?.imageURL}
+          comments={post.comments}
         />
       ))}
       
