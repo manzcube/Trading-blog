@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 // Firebase 
 import { setDoc, onSnapshot, doc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { getDownloadURL, ref, uploadBytes, deleteObject } from 'firebase/storage'
 import { db, storage } from '../config/firebase-config'
 
 // Components
@@ -47,6 +47,8 @@ const EditPost = (props) => {
         e.preventDefault()
         try {  
             if (picture) {
+                const delImgRef = ref(storage, imageURL) // Delete image
+                deleteObject(delImgRef)
                 const imageRef = ref(storage, `images/${picture.name + v4()}`)  // Logic for image uploading
                 uploadBytes(imageRef, picture).then(() => {
                     console.log('image uploaded') 
@@ -74,8 +76,7 @@ const EditPost = (props) => {
                     navigate(`/posts/${params.id}`)
                     toast.success('Successfully updated!')
                 })
-            }
-            
+            }            
         } catch (err) {
             toast.error(err.message)
         }

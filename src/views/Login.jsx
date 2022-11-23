@@ -49,10 +49,11 @@ const Login = (props) => {
         await signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             const user = userCredential.user
+            navigate('/dashboard')
             toast.success(`Successfully logged in ${user?.email}`)
           }).catch((err) => {
             console.log('Something went wrong')
-            toast.error(err.message)
+            toast.error(err.code)
           })
     } else {
       toast.error('Email or Password incorrect!')
