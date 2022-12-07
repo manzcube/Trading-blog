@@ -1,14 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import { BrowserRouter } from 'react-router-dom';
+import React, { createContext } from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import { BrowserRouter } from "react-router-dom";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+export const PostContext = createContext({
+  orderOfPost: 0,
+});
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter>    
-    <React.StrictMode>
+  <BrowserRouter>
+    <PostContext.Provider value={PostContext}>
       <App />
-    </React.StrictMode>
+    </PostContext.Provider>
   </BrowserRouter>
 );

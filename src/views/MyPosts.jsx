@@ -20,7 +20,8 @@ const MyPosts = (props) => {
         const data = await getDocs(q)
         const dataArray = data.docs.map(doc => ({ id: doc.id, ...doc.data() }))
         if (!posts.length) { // Check if there is already data in the pieces of state to avoid inifnite re-rendering
-          setPosts(dataArray)
+          const sortedPosts = dataArray.sort()
+          setPosts(sortedPosts)
         }
       } catch (error) {
         console.log(error)
@@ -42,6 +43,8 @@ const MyPosts = (props) => {
           date={post.date}
           author={post.author}
           image={post?.imageURL}
+          currentUser={user}
+          comments={post.comments}
         />
       ))}
     </div>

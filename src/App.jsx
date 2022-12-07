@@ -1,7 +1,7 @@
 // React
 import './App.css';
 import React, { useEffect, useState } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 // Toast
 import { toast, ToastContainer, Zoom } from 'react-toastify';
@@ -22,17 +22,20 @@ import Home from './views/Home';
 import CreatePost from './views/CreatePost';
 import EditPost from './views/EditPost';
 import ViewPost from './views/ViewPost';
-import MyPosts from './views/MyPosts'
+import MyPosts from './views/MyPosts';
+import News from './views/News';
+
+
 
 function App() {
   const [user, setUser] = useState(auth?.currentUser)
-  const navigate = useNavigate()
+  const navigate = useNavigate()  
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setUser(user?.email)
     })
-  }, [auth])
+  }, [])
 
   // Signing out logic
   const Logout = async () => {
@@ -70,7 +73,8 @@ function App() {
         <Route path='/dashboard' element={<Dashboard user={user} />} />
         <Route path='/myposts' element={<MyPosts user={user} />} />
         <Route path='/bookmarked' element={<Bookmarked user={user} />} />
-        <Route path='/create' element={<CreatePost user={user} />} />
+        <Route path='/create' element={<CreatePost user={user} /> } />
+        <Route path='/news' element={<News user={user} /> } />
         <Route path='/edit/:id' element={<EditPost user={user} />} />
         <Route path='/posts/:id' element={<ViewPost user={user} />} />
         <Route path='/*' element={<Home />} />

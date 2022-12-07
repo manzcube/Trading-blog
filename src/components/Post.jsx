@@ -22,11 +22,11 @@ const Post = (props) => {
         if (!message.length) {
             toast.warn('Please, write something before comment')
         } else {
-            setComments([ ...comments, { message, author: props.author } ])
+            setComments([ ...comments, { message, author: props.currentUser } ])
             setMessage('')
             const postRef = doc(db, 'posts', props.postId)
             await updateDoc(postRef, {
-                comments: arrayUnion({ message, author: props.author })
+                comments: arrayUnion({ message, author: props.currentUser })
             })
             
         }        
@@ -34,10 +34,10 @@ const Post = (props) => {
 
     return (
         <>
-            <div className='container max-w-3xl md:h-56 flex flex-row space-y-3 mx-auto mt-20 no-underline rounded-lg md:overflow-hidden shadow-lg bg-white ring-1 ring-slate-900/5 hover:scale-105'>
+            <div className='container max-w-3xl md:h-56 flex flex-row space-y-3 mx-auto mt-20 no-underline rounded-lg md:overflow-hidden shadow-lg bg-white ring-1 ring-slate-900/5'>
                 <div className="md:flex w-full">
                     <a href={`posts/${props.postId}`} className="">
-                        <img src={props.image} alt="" className='h-48 w-full object-cover md:h-full md:w-52 rounded-t-lg md:rounded-l-lg' />
+                        <img src={props.image} alt="" className='h-48 w-full object-cover md:h-full md:w-52 rounded-t-lg md:rounded-l-lg hover:scale-105' />
                     </a>
                     <div className="p-5 max-w-xl w-full flex flex-col h-full md:justify-between">
                         <div className="flex justify-end items-center">

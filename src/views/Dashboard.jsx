@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+// import { PostContext } from '../index'
 // Firebase 
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../config/firebase-config'
@@ -9,25 +9,45 @@ import { db } from '../config/firebase-config'
 import SignInBadge from '../components/SignInBadge'
 import Post from '../components/Post'
 
+
+
 const Dashboard = (props) => {
-  const [user, setUser] = useState(props.user)
+  const [user, setUser] = useState(props.user) // Implement useOCntext for order state, and user, also to access docs and sftuff from all components
   const [posts, setPosts] = useState([])
   const navigate = useNavigate()
+  // const orderOfPost = useContext(PostContext)
 
+
+  const getSortedPosts = (slice) => {
+    const newArray = []
+    const len = slice.length
+    
+    for (let i = 0; i < len; i++) {
+      for (let j = 0; j < len; j++) {
+        if (slice[j].order === i) {
+          newArray.push(slice[j])
+        }
+      }
+    }
+    return newArray
+  }
 
   useEffect(() => {
     setUser(props.user) // Update user
     const getData = async () => {
       try {
         const data = await getDocs(collection(db, 'posts')) // Get all posts
-        const dataArray = data.docs.map(doc => ({ id: doc.id, ...doc.data() })) // Assign id's for posst
-        setPosts(dataArray) 
+        const dataArray = data.docs.map(doc => ({ id: doc.id, ...doc.data() })) // Assign id's for posst        
+        setPosts(getSortedPosts(dataArray))
       } catch (error) {
         console.log(error)
       }
     }
     getData()
   }, [props.user])
+
+
+  
   
   
   return user ? (
@@ -41,7 +61,7 @@ const Dashboard = (props) => {
         </div>
         <p className="text-slate-500 group-hover:text-white text-sm">Create a new report from your recent trades.</p>
       </button>
-      {posts.map(post => (
+      {posts?.map(post => (
         <Post
           key={post.id}
           postId={post.id}
@@ -50,11 +70,13 @@ const Dashboard = (props) => {
           date={post.date}
           author={post.author}
           image={post?.imageURL}
+          currentUser={user}
           comments={post.comments}
         />
       ))}
       
     </div>
+    
   ) : <SignInBadge />
 }
 

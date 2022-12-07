@@ -6,7 +6,7 @@ const Navbar = ({ email, logoutFunc, user }) => {
 
     return (
         <React.Fragment>
-            <nav className='h-12 drop-shadow-md bg-sky-500 sm:h-12 flex justify-between m-5 rounded'>
+            <nav className='h-12 drop-shadow-md bg-sky-500 flex justify-between m-5 rounded'>
                 <div className='ml-3 flex items-center'>
                     <a href="/" className='decoration-0 text-white'>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
@@ -16,29 +16,31 @@ const Navbar = ({ email, logoutFunc, user }) => {
                     <span className='mx-3 text-white'>{email}</span>
                 </div>
                 <div className='mr-3 flex items-center'>
-                    <div className='hidden sm:flex text-white'>
+                    <div className='hidden md:flex text-white'>
                         <a href="/dashboard" className='mx-3'>Dashboard</a>
                         <a href="/myposts" className='mx-3'>My Posts</a>
                         <a href="/bookmarked" className='mx-3'>Saved Posts</a>
+                        <a href="/news" className='mx-3'>News</a>
                         {user ? (
-                        <button onClick={logoutFunc} className='mx-3'>Logout</button>
+                            <button onClick={logoutFunc} className='mx-3'>Logout</button>
                         ) : (
-                        <a href="/login" className='mx-3'>Login</a>
+                            <a href="/login" className='mx-3'>Login</a>
                         )}  
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white sm:hidden" onClick={() => setDropDown(!dropDown)} >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white md:hidden" onClick={() => setDropDown(!dropDown)} >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
                     </svg>
                 </div>                  
             </nav>
-            <div className={`${dropDown ? 'flex ' : 'hidden'} flex-col items-end p-5 mr-10 mx-auto space-y-3 bg-white text-sky-600 sm:hidden`}>
-                <a href="/dashboard" className='mx-3 border-b-2'>Dashboard</a>
-                <a href="/myposts" className='mx-3 border-b-2'>My Posts</a>
-                <a href="/bookmarked" className='mx-3 border-b-2'>Saved Posts</a>
+            <div className={`${dropDown ? 'flex ' : 'hidden'} flex-col items-end p-5 mx-10 space-y-3 bg-sky-500 rounded-md text-white md:hidden`}>
+                <a href="/dashboard" className='py-2 px-5 w-full text-end rounded text-white hover:bg-sky-300'>Dashboard</a>
+                <a href="/myposts" className='py-2 px-5 w-full text-end rounded text-white hover:bg-sky-300'>My Posts</a>
+                <a href="/bookmarked" className='py-2 px-5 w-full text-end rounded text-white hover:bg-sky-300'>Saved Posts</a>
+                <a href="/news" className='py-2 px-5 w-full text-end rounded text-white hover:bg-sky-300'>News</a>
                 {user ? (
-                <button onClick={logoutFunc} className='mx-3 border-b-2'>Logout</button>
+                    <button onClick={logoutFunc} className='py-2 px-5 w-full text-end rounded text-white hover:bg-sky-300'>Logout</button>
                 ) : (
-                <a href="/login" className='mx-3 border-b-2'>Login</a>
+                    <a href="/login" className='py-2 px-5 w-full text-end rounded text-white hover:bg-sky-300'>Login</a>
                 )}  
             </div>  
         </React.Fragment>
