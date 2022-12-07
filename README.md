@@ -18,4 +18,3 @@ Storage to upload all the files, and Hosting to deploy it.
 
 
 ## Images
-![Alt text](../../../../../../c:/Users/usuario/Desktop/1.jpg)
