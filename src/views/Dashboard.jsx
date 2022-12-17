@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import { PostContext } from '../index'
 // Firebase 
-import { collection, getDocs, doc, arrayUnion, arrayRemove, updateDoc } from 'firebase/firestore'
+import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../config/firebase-config'
 
 // Components
@@ -36,7 +36,7 @@ const Dashboard = (props) => {
       }
     }
     getData()
-  }, [])
+  }, [props.user, posts.length])
 
   const checkIfSaved = (currentPost) => {
     return currentPost?.savedBy?.includes(props.user)

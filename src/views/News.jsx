@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import SignInBadge from '../components/SignInBadge';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -7,15 +7,12 @@ import Button from '../components/Button';
 const News = (props) => {
     const [data, setData] = useState([])
 
-    console.log(data)
-
     const searchNews = () => {
         axios.get('https://newsapi.org/v2/top-headlines?country=us&apiKey='+process.env.REACT_APP_NEWS_API_KEY)
         .then((response) => {
             setData(response.data.articles)
-        }).catch((err) => toast.error(err.message))
+        }).catch((err) => toast.error(err.message))  
     }
-    
 
     return props?.user ? (
         <div className='pb-10 m-10'>

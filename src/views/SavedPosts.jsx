@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 // Firebase
-import { getDocs, collection, where, query } from 'firebase/firestore'
+import { getDocs, collection } from 'firebase/firestore'
 import { db } from '../config/firebase-config'
 
 // Components
@@ -34,7 +34,7 @@ const SavedPosts = (props) => {
       }
     }
     getData()
-  }, [props.user])
+  }, [props.user, posts.length])
 
   const checkIfSaved = (currentPost) => {
     return currentPost?.savedBy?.includes(props.user)

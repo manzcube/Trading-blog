@@ -34,7 +34,7 @@ const MyPosts = (props) => {
       }
     }
     getData()
-  }, [props.user])
+  }, [props.user, posts.length])
 
   const checkIfSaved = (currentPost) => {
     return currentPost?.savedBy?.includes(props.user)
