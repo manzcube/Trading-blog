@@ -4,7 +4,7 @@ import { v4 } from 'uuid'
 import { toast } from 'react-toastify';
 
 // Firebase 
-import { setDoc, onSnapshot, doc } from "firebase/firestore";
+import { onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes, deleteObject } from 'firebase/storage'
 import { db, storage } from '../config/firebase-config'
 
@@ -22,7 +22,7 @@ const EditPost = (props) => {
         title: '',
         description: ''
     })  
-    const { title, description, imageURL, author, date, userID, comments } = formData
+    const { title, description, imageURL } = formData
 
 
     useEffect(() => {
@@ -50,35 +50,23 @@ const EditPost = (props) => {
             // If the user added a new picture
             if (picture) {
                 // We update the doc with the old imageURL                    
-                await setDoc(doc(db, "posts", params.id), {
-                    title,
-                    description,
-                    imageURL,
-                    author, 
-                    date, 
-                    userID, 
-                    comments
+                await updateDoc(doc(db, "posts", params.id), {
+                    title, 
+                    description
                 }).then(() => {
                     //If successfull, we delete the old picture from firebase storage
                     const delImgRef = ref(storage, imageURL) 
                     deleteObject(delImgRef)
                     //Create instance of the new picture and upload it to storage
                     const imageRef = ref(storage, `images/${picture.name + v4()}`)  
-                    uploadBytes(imageRef, picture).then(() => {
+                    uploadBytes(imageRef, picture).then(async () => {
                         // Now we get the url of the new picture
-                        getDownloadURL(imageRef).then(async url => {
+                        await getDownloadURL(imageRef).then(async url => {
                             // And we update again the doc, by this way, if there is some problem on the doc update, no image will be changed.
-                            await setDoc(doc(db, "posts", params.id), {
-                                title,
-                                description,
+                            await updateDoc(doc(db, "posts", params.id), {
                                 imageURL: url,
-                                author, 
-                                date, 
-                                userID, 
-                                comments
                             })
                     }).catch((err) => toast.error(err.message))
-
                     navigate(`/posts/${params.id}`)
                     toast.success('Successfully updated!')
                 }).catch((err) => {
@@ -87,14 +75,9 @@ const EditPost = (props) => {
             })
                 // If there is no new picture
             } else {
-                await setDoc(doc(db, "posts", params.id), {
-                    title,
-                    description,
-                    imageURL,
-                    author, 
-                    date, 
-                    userID, 
-                    comments
+                await updateDoc(doc(db, "posts", params.id), {
+                    title, 
+                    description
                 }).then(() => {
                     navigate(`/posts/${params.id}`)
                     toast.success('Successfully updated!')

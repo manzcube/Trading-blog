@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 
 // Firebase
 import { db } from '../config/firebase-config'
-import { doc, updateDoc, arrayUnion, arrayRemove, onSnapshot } from 'firebase/firestore'
+import { doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
 
 // CSS
 import './Components.css'
