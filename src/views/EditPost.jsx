@@ -9,9 +9,8 @@ import { getDownloadURL, ref, uploadBytes, deleteObject } from 'firebase/storage
 import { db, storage } from '../config/firebase-config'
 
 // Components
-import FormInput from '../components/FormInput';
+import Form from '../components/Form';
 import SignInBadge from '../components/SignInBadge';
-import Button from '../components/Button';
 
 
 const EditPost = (props) => {
@@ -21,9 +20,9 @@ const EditPost = (props) => {
     const [picture, setPicture] = useState(null)    
     const [formData, setFormData] = useState({
         title: '',
-        description: '',
+        description: ''
     })  
-    const { title, description, date, author, imageURL } = formData
+    const { title, description, imageURL, author, date, userID, comments } = formData
 
 
     useEffect(() => {
@@ -43,35 +42,59 @@ const EditPost = (props) => {
         }))
     }
 
+    // Submit edited post
     const onSubmit = async (e) => {
+        // First prevent the default submmiting
         e.preventDefault()
         try {  
+            // If the user added a new picture
             if (picture) {
-                const delImgRef = ref(storage, imageURL) // Delete image
-                deleteObject(delImgRef)
-                const imageRef = ref(storage, `images/${picture.name + v4()}`)  // Logic for image uploading
-                uploadBytes(imageRef, picture).then(() => {
-                    console.log('image uploaded') 
-                    getDownloadURL(imageRef).then(async url => {
-                        await setDoc(doc(db, "posts", params.id), {
-                            title,
-                            date,
-                            author,
-                            description,
-                            imageURL: url,
-                        }).then(() => {
-                            navigate(`/posts/${params.id}`)
-                            toast.success('Successfully updated!')
-                        })  
-                    })
-                })   
+                // We update the doc with the old imageURL                    
+                await setDoc(doc(db, "posts", params.id), {
+                    title,
+                    description,
+                    imageURL,
+                    author, 
+                    date, 
+                    userID, 
+                    comments
+                }).then(() => {
+                    //If successfull, we delete the old picture from firebase storage
+                    const delImgRef = ref(storage, imageURL) 
+                    deleteObject(delImgRef)
+                    //Create instance of the new picture and upload it to storage
+                    const imageRef = ref(storage, `images/${picture.name + v4()}`)  
+                    uploadBytes(imageRef, picture).then(() => {
+                        // Now we get the url of the new picture
+                        getDownloadURL(imageRef).then(async url => {
+                            // And we update again the doc, by this way, if there is some problem on the doc update, no image will be changed.
+                            await setDoc(doc(db, "posts", params.id), {
+                                title,
+                                description,
+                                imageURL: url,
+                                author, 
+                                date, 
+                                userID, 
+                                comments
+                            })
+                    }).catch((err) => toast.error(err.message))
+
+                    navigate(`/posts/${params.id}`)
+                    toast.success('Successfully updated!')
+                }).catch((err) => {
+                    toast.error(err.message)
+                })
+            })
+                // If there is no new picture
             } else {
                 await setDoc(doc(db, "posts", params.id), {
                     title,
                     description,
-                    author,
+                    imageURL,
+                    author, 
                     date, 
-                    imageURL
+                    userID, 
+                    comments
                 }).then(() => {
                     navigate(`/posts/${params.id}`)
                     toast.success('Successfully updated!')
@@ -84,49 +107,14 @@ const EditPost = (props) => {
     }
 
   return (user && formData) ? (
-    <div className='flex justify-center items-center py-16 h-full'>
-        <form onSubmit={onSubmit} className='bg-white shadow-md rounded px-8 mx-10 w-full md:w-2/4 py-10 space-y-8 flex flex-col justify-between'>
-            <title className='flex justify-center text-slate-500 font-bold text-lg'>Edit a Post</title>
-
-            <FormInput 
-                value={title}
-                label='Title*'
-                inputProps={{ type: 'text', name: 'title', placeholder: 'Your title', id: 'title' }}
-                onChange={onChange}
-            />
-
-            <div>
-                <label htmlFor='file-upload' className="block text-grey-700 text-sm font-bold mb-2">
-                    Image
-                </label>
-                <input 
-                    type="file" 
-                    id='file-upload'
-                    onChange={e => { setPicture(e.target.files[0]) }}
-                    className={`shadow appearance-none  rounded w-full py-2 px-3 mt-2 text-gray-700 bg-gray-100 leading-tight focus:outline-none focus:shadow-outline`}
-                />                
-            </div>
-
-            <div>
-                <label htmlFor="description" className='block text-grey-700 text-sm font-bold mb-2'>Description*</label>
-                <textarea 
-                    required
-                    className='shadow appearance-none bg-gray-100 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' 
-                    value={description} 
-                    onChange={onChange}
-                    name="description" 
-                    placeholder='Your description' 
-                    id='description' 
-                    cols="30" 
-                    rows="10"
-                >
-                </textarea>
-            </div>
-
-
-            <Button inputProps={{type: 'submit'}}>Submit</Button>
-        </form>
-    </div>
+    <Form 
+        onSubmit={onSubmit}
+        formTitle='Edit a Post'
+        onChange={onChange}
+        title={title}
+        description={description}
+        imageOnChange={e => { setPicture(e.target.files[0]) }}
+    />
   ) : <SignInBadge  />
 }
 

@@ -17,7 +17,7 @@ import Navbar from './components/Navbar'
 // Views
 import Dashboard from './views/Dashboard';
 import Login from './views/Login';
-import Bookmarked from './views/Bookmarked';
+import SavedPosts from './views/SavedPosts';
 import Home from './views/Home';
 import CreatePost from './views/CreatePost';
 import EditPost from './views/EditPost';
@@ -28,7 +28,7 @@ import News from './views/News';
 
 
 function App() {
-  const [user, setUser] = useState(auth?.currentUser)
+  const [user, setUser] = useState(auth?.currentUser?.email)
   const navigate = useNavigate()  
 
   useEffect(() => {
@@ -72,7 +72,7 @@ function App() {
         <Route path='/login' element={<Login user={user} />} />
         <Route path='/dashboard' element={<Dashboard user={user} />} />
         <Route path='/myposts' element={<MyPosts user={user} />} />
-        <Route path='/bookmarked' element={<Bookmarked user={user} />} />
+        <Route path='/bookmarked' element={<SavedPosts user={user} />} />
         <Route path='/create' element={<CreatePost user={user} /> } />
         <Route path='/news' element={<News user={user} /> } />
         <Route path='/edit/:id' element={<EditPost user={user} />} />

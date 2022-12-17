@@ -1,4 +1,4 @@
-import React from 'react'
+
 
 const SinglePost = ({ imageURL, title, description, author, date }) => {
   return (

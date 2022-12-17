@@ -9,7 +9,7 @@ import Post from '../components/Post'
 import SignInBadge from '../components/SignInBadge'
 import { toast } from 'react-toastify'
 
-const MyPosts = (props) => {
+const SavedPosts = (props) => {
   const [posts, setPosts] = useState([])
 
   const getSortedPosts = (slice) => {
@@ -19,13 +19,13 @@ const MyPosts = (props) => {
   }
 
   useEffect(() => {
+    console.log('running useeffect')
     const getData = async () => {
       try {
         // Check if there is already data posts to avoid inifnite re-rendering
         if (!posts.length && props.user) { 
-          const q = query(collection(db, 'posts'), where("author", "==", props.user))
-          const data = await getDocs(q)
-          const dataArray = data.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+          const data = await getDocs(collection(db, "posts")) // Get all posts
+          const dataArray = data.docs.map(doc => ({ id: doc.id, ...doc.data() })) // Assign id's for posst        
           const sortedArray = getSortedPosts(dataArray)
           setPosts(sortedArray)
         }
@@ -42,23 +42,23 @@ const MyPosts = (props) => {
 
   return props.user ? (
     <div className='pb-10 m-10'>
-      <span className='flex w-full font-bold px-10 text-xl my-20'>My Posts</span>
-        {posts.map(post => (
-        <Post
-          key={post.id}
-          postId={post.id}
-          title={post.title}
-          description={post.description}
-          date={post.date}
-          author={post.author}
-          image={post?.imageURL}
-          currentUser={props?.user}
-          comments={post.comments}
-          savedByCurrentUser={checkIfSaved(post)}
-        />
-      ))}
+      <span className='flex w-full font-bold px-10 text-xl my-20'>Saved Posts</span>
+        {posts.map(post => post?.savedBy?.includes(props.user) ? (
+          <Post
+            key={post.id}
+            postId={post.id}
+            title={post.title}
+            description={post.description}
+            date={post.date}
+            author={post.author}
+            image={post?.imageURL}
+            currentUser={props?.user}
+            comments={post.comments}
+            savedByCurrentUser={checkIfSaved(post)}
+          />
+      ) : null )}
     </div>
   ) : <SignInBadge />
 }
 
-export default MyPosts
+export default SavedPosts;
