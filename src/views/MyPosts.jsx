@@ -42,7 +42,7 @@ const MyPosts = (props) => {
 
   return props.user ? (
     <div className='pb-10 m-10'>
-      <span className='flex w-full font-bold px-10 text-xl my-20'>My Posts</span>
+      <span className='flex w-full justify-center font-bold text-slate-500 my-20 px-10 text-xl'>My Posts</span>
         {posts.map(post => (
         <Post
           key={post.id}

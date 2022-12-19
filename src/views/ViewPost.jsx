@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 // Firebase
-import { deleteDoc, doc, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore';
+import { deleteDoc, doc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { deleteObject, ref } from 'firebase/storage'
 import { storage, db } from '../config/firebase-config';
 
@@ -35,7 +35,7 @@ const ViewPost = (props) => {
       onSnapshot(doc(db, "posts", params.id), doc => { // Retrieve info from single doc
         if (doc.data()) {
           setPostData(doc.data())
-          setComments(doc.data()?.comments)
+          setComments(doc.data().comments)
         } 
       })
     } catch(err) {
@@ -73,6 +73,19 @@ const ViewPost = (props) => {
     }) 
   }
 
+  // Funciton to delete a comment
+  const deleteThisComment = async (someComment) => {
+    const postRef = doc(db, 'posts', params.id)
+    await updateDoc(postRef, {
+        comments: arrayRemove(someComment)
+    }).then(() => {            
+        setComments(comments.filter(function(item) {
+            return item !== someComment
+        }))
+        toast.success('comment deleted!')
+    }).catch((err) => toast.error(err.message))
+} 
+
 
   return props?.user ? (
     <div className='flex flex-col justify-center items-center py-16 h-full mx-10'>   
@@ -94,13 +107,14 @@ const ViewPost = (props) => {
         title={title}
         date={date} 
       />
-        <div className="container max-w-2xl my-5 mx-auto p-5 flex flex-col rounded border-x-2 border-b-2 ">
+        <div className="container max-w-2xl my-5 mx-auto p-5 flex flex-col rounded border-b shadow-md">
           <p className='text-md font-bold text-gray-500 mb-5'>Comments</p>
           {comments?.map(comment => (
               <Comment
-                  key={comments.indexOf(comment)}
+                  key={comments?.indexOf(comment)}
                   author={comment.author}
                   message={comment.message}
+                  deleteThisComment={() => deleteThisComment(comment)}
               />
           ))}
           <div className='flex items-center'>

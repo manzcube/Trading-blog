@@ -16,58 +16,24 @@ const News = (props) => {
 
     return props?.user ? (
         <div className='pb-10 m-10'>
-            <span className='flex w-full font-bold px-10 text-xl my-20'>News</span>
-            <div className="flex justify-center w-full">
-                <table className='shadow-md bg-slate-300 max-w-lg container border-spacing-2 border-separate border rounded-md'>
-                    <thead>
-                        <tr>
-                            <th className='bg-slate-200 rounded border-slate-600 text-slate-600'>
-                                Name
-                            </th>
-                            <th className='bg-slate-200 rounded border-slate-600 text-slate-600'>
-                                Link
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className="bg-slate-200 rounded border-slate-600 text-slate-600 px-3">MarketWatch</td>
-                            <td className="bg-slate-200 rounded border-slate-600 text-slate-600 px-3">
-                                <a href="https://www.marketwatch.com/latest-news?mod=top_nav" className='text-sky-500 underline flex items-center' target="_blank" rel="noreferrer">
-                                    MarketWatch
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                                    </svg>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="bg-slate-200 rounded border-slate-600 text-slate-600 px-3">Investopedia</td>
-                            <td className="bg-slate-200 rounded border-slate-600 text-slate-600 px-3">
-                                <a href="https://www.investopedia.com/news-4427706" className='text-sky-500 underline flex items-center' target="_blank" rel="noreferrer">
-                                    Investopedia
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                                    </svg>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="bg-slate-200 rounded border-slate-600 text-slate-600 px-3">Coin Telegraph</td>
-                            <td className="bg-slate-200 rounded border-slate-600 text-slate-600 px-3">
-                                <a href="https://cointelegraph.com/" className='text-sky-500 underline flex items-center' target="_blank" rel="noreferrer">
-                                    Coin Telegraph
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                                    </svg>
-                                </a>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>    
-            <div className='flex items-center mt-20'>
+            <div className='sm:mx-40 mt-20'>
+                <span className='w-full font-bold text-slate-500 px-10 text-lg'>News Sources</span>
+                <div className="flex flex-col justify-center py-3 sm:flex-row sm:items-center">
+                    <a href="https://www.marketwatch.com/latest-news?mod=top_nav" className='border max-h-10 shadow-md py-3 px-10 mx-5 my-2 rounded-md text-sky-500 text-sm flex items-center hover:scale-95' target="_blank" rel="noreferrer">
+                        <img src="https://imgs.search.brave.com/a6TJwPF1l1y6lXWZHFf3EfNZLy-y78qQUXwTlREijns/rs:fit:180:180:1/g:ce/aHR0cHM6Ly9wbGF5/LWxoLmdvb2dsZXVz/ZXJjb250ZW50LmNv/bS9YQW9ZTDZYcFBE/REhzZ2VQREtvUVgt/dGMwRGRDSlpGWVBj/NUw3OWlOWVNFdzNn/cmJSOGctb0JVRTVu/MG1SRERYbnBFPXMx/ODA" alt="" className='w-5 h-5 rounded mr-2' />
+                        MarketWatch
+                    </a>
+                    <a href="https://www.investopedia.com/news-4427706" className='border max-h-10 shadow-md py-3 px-10 mx-5 my-2 rounded-md text-sky-500 text-sm flex items-center hover:scale-95' target="_blank" rel="noreferrer">
+                        <img src="https://imgs.search.brave.com/oy37OYe0zhfAk9cV7GoT54bSbsNhj7hUEqF1ogzGEUc/rs:fit:48:48:1/g:ce/aHR0cHM6Ly9wYnMu/dHdpbWcuY29tL3By/b2ZpbGVfaW1hZ2Vz/LzEwOTAyNDA4MDQy/Mzk2MDk4NTgvN2RV/WjVfNHJfbm9ybWFs/LmpwZw" alt="" className='w-4 h-4 w-5 h-5 rounded mr-2' />
+                        Investopedia
+                    </a>
+                    <a href="https://cointelegraph.com/" className='border max-h-10 shadow-md py-3 px-10 mx-5 my-2 rounded-md text-sky-500 text-sm flex items-center hover:scale-95' target="_blank" rel="noreferrer">
+                        <img src="https://imgs.search.brave.com/MSmAUwQIlE5P9h8LcR6QICgcOyN3YT2Qk6ZFAdlkYuE/rs:fit:900:900:1/g:ce/aHR0cHM6Ly95dDMu/Z2dwaHQuY29tL2Ev/QUdGLWw3OGh5SDAt/YVE4bDZFRjB2WnRG/NUNvN3dxdVc3OWRY/ZzhhT1pRPXM5MDAt/bW8tYy1jMHhmZmZm/ZmZmZi1yai1rLW5v" alt="" className='w-5 h-5 rounded mr-2' />
+                        Coin Telegraph
+                    </a>
+                </div>   
+            </div> 
+            <div className='flex items-center'>
                 <Button onClick={searchNews}>Top US Headlines</Button>
             </div>    
                 <div className="w-full flex flex-wrap justify-center">
@@ -77,12 +43,12 @@ const News = (props) => {
                             <div className="px-6 py-4">
                                 <div className="font-bold text-xl mb-2">{post.title}</div>
                                 <p className="text-gray-700 text-base">{post.description}</p>
-                                <a href={postMessage.url}>Go see the new</a>
+                                <a href={post.url} target='_blank' rel="noreferrer" className='text-sky-400 underline'>Go see the new</a>
                             </div>
                             <div className="px-6 pt-4 pb-2">
-                                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">written by: {post.author}</span>
-                                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">source: {post.source.name}</span>
-                                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">date: {post.publishedAt}</span>
+                                <span className="inline-block bg-gray-200 rounded-full px-5 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">written by: {post.author}</span>
+                                <span className="inline-block bg-gray-200 rounded-full px-5 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">source: {post.source.name}</span>
+                                <span className="inline-block bg-gray-200 rounded-full px-5 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">date: {post.publishedAt}</span>
                             </div>
                         </div> 
                     ))}

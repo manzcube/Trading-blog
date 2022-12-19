@@ -18,7 +18,20 @@ const Post = (props) => {
     const [comments, setComments] = useState(props.comments)
     const [savedByCurrentUser, setSavedByCurrentUser] = useState(props.savedByCurrentUser)
 
-    // // Function to save Post
+    // Funciton to delete a comment
+    const deleteThisComment = async (someComment) => {
+        const postRef = doc(db, 'posts', props.postId)
+        await updateDoc(postRef, {
+            comments: arrayRemove(someComment)
+        }).then(() => {            
+            setComments(comments.filter(function(item) {
+                return item !== someComment
+            }))
+            toast.success('comment deleted!')
+        }).catch((err) => toast.error(err.message))
+    } 
+
+    // Function to save Post
     const postToBeSaved = async () => {
         const postRef = doc(db, 'posts', props.postId)
         await updateDoc(postRef, {
@@ -27,7 +40,7 @@ const Post = (props) => {
     }
 
     // Function to unsave the Post
-    const postToBeRemoved = async () => {
+    const postToBeUnsaved = async () => {
         const postRef = doc(db, 'posts', props.postId)
         await updateDoc(postRef, {
             savedBy: arrayRemove(props.currentUser)
@@ -61,7 +74,7 @@ const Post = (props) => {
                     <div className="p-5 max-w-xl w-full flex flex-col h-full md:justify-between">
                         <div className="flex justify-end items-center">
                             <p className='ml-3 text-sm mr-2 xs:mr-0'>{props.date}</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" onClick={savedByCurrentUser ? postToBeRemoved : postToBeSaved} cursor='pointer' fill="none" viewBox="0 0 24 24" strokeWidth={3.5} stroke="currentColor" className={`w-4 h-4 ${savedByCurrentUser ? "text-red-400" : "text-gray-500"}`}>
+                            <svg xmlns="http://www.w3.org/2000/svg" onClick={savedByCurrentUser ? postToBeUnsaved : postToBeSaved} cursor='pointer' fill="none" viewBox="0 0 24 24" strokeWidth={3.5} stroke="currentColor" className={`w-4 h-4 ${savedByCurrentUser ? "text-red-400" : "text-gray-500"}`}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
                             </svg>
 
@@ -94,12 +107,13 @@ const Post = (props) => {
                 comments
             </button>
             {openComments ? (
-                <div className="container max-w-2xl my-5 mx-auto p-5 flex flex-col rounded bg-slate-200">
+                <div className="container max-w-2xl my-5 mx-auto p-5 flex flex-col rounded border-b shadow-md">
                     {comments?.map(comment => (
                         <Comment
                             key={comments.indexOf(comment)}
                             author={comment.author}
                             message={comment.message}
+                            deleteThisComment={() => deleteThisComment(comment)}
                         />
                     ))}
                     <div className='flex items-center'>

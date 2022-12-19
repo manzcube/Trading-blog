@@ -43,7 +43,7 @@ const Dashboard = (props) => {
   }
   
   return props?.user ? (
-    <div className='m-10 pb-10'>
+    <div className='m-10'>
       <CreatePostButton onClick={() => navigate('/create')} />
       {posts?.map(post => (
         <Post

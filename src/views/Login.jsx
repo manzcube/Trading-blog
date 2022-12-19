@@ -63,6 +63,7 @@ const Login = (props) => {
   return (
     <div className='w-full max-w-md mx-auto mt-20'>
       <form onSubmit={onSubmit} className='bg-white shadow-md rounded px-8 py-10 mb-4 flex flex-col'>
+        <span className='flex w-full justify-center font-bold text-slate-500 mb-5 px-10 text-lg'>Log In</span>
         <FormInput 
           value={email}
           label='Email'
