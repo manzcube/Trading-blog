@@ -77,6 +77,16 @@ const ViewPost = (props) => {
   return props?.user ? (
     <div className='flex flex-col justify-center items-center py-16 h-full mx-10'>   
       <BackToDashboard /> 
+      <div className="w-full flex justify-end ViewPostButtons">
+        <VerifyAuth author={author} user={props.user}>
+          <button className='bg-sky-500 text-white py-2 px-6 my-5 mx-4 rounded hover:bg-sky-500 hover:scale-95' onClick={() => navigate(`/edit/${params.id}`)}>Edit</button>
+          {deletion ? (
+            <button  className='bg-red-500 text-white py-2 px-6 my-5 mx-4 rounded hover:bg-red-500 hover:scale-95' onClick={deletePost}>Sure?</button>
+          ) : (
+            <button className='bg-red-500 text-white py-2 px-6 my-5 mx-4 rounded hover:bg-red-500 hover:scale-95' onClick={() => setDeletion(true)}>Delete</button>
+          )}
+        </VerifyAuth>
+      </div>
       <SinglePost
         imageURL={imageURL}
         author={author}
@@ -84,7 +94,8 @@ const ViewPost = (props) => {
         title={title}
         date={date} 
       />
-        <div className="container max-w-2xl my-5 mx-auto p-5 flex flex-col rounded bg-slate-200">
+        <div className="container max-w-2xl my-5 mx-auto p-5 flex flex-col rounded border-x-2 border-b-2 ">
+          <p className='text-md font-bold text-gray-500 mb-5'>Comments</p>
           {comments?.map(comment => (
               <Comment
                   key={comments.indexOf(comment)}
@@ -103,16 +114,7 @@ const ViewPost = (props) => {
             <Button onClick={pushComment}>Add</Button>
           </div>                    
         </div>
-      <div className="w-full flex justify-end ViewPostButtons">
-        <VerifyAuth author={author} user={props.user}>
-          <button className='bg-sky-500 text-white py-2 px-6 my-5 mx-4 rounded hover:bg-sky-500 hover:scale-95' onClick={() => navigate(`/edit/${params.id}`)}>Edit</button>
-          {deletion ? (
-            <button  className='bg-red-500 text-white py-2 px-6 my-5 mx-4 rounded hover:bg-red-500 hover:scale-95' onClick={deletePost}>Sure?</button>
-          ) : (
-            <button className='bg-red-500 text-white py-2 px-6 my-5 mx-4 rounded hover:bg-red-500 hover:scale-95' onClick={() => setDeletion(true)}>Delete</button>
-          )}
-        </VerifyAuth>
-      </div>
+      
     </div>
   ) : <SignInBadge />
 }
