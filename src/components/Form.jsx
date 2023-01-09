@@ -4,7 +4,7 @@ import React from 'react'
 import FormInput from './FormInput'
 import Button from './Button'
 
-const Form = ({ onSubmit, formTitle, onChange, title, description, imageOnChange }) => {
+const Form = ({ onSubmit, formTitle, onChange, title, description, imageOnChange}) => {
   return (
     <div className='flex justify-center items-center py-16 h-full'>
         <form onSubmit={onSubmit} className='bg-white shadow-md rounded px-8 mx-10 w-full md:w-2/4 py-10 space-y-8 flex flex-col justify-between'>
@@ -28,7 +28,6 @@ const Form = ({ onSubmit, formTitle, onChange, title, description, imageOnChange
                     className='shadow appearance-none  rounded w-full py-2 px-3 mt-2 text-gray-700 bg-gray-100 leading-tight focus:outline-none focus:shadow-outline'
                 />                
             </div>
-
             <div>
                 <label htmlFor="description" className='block text-grey-700 text-sm font-bold mb-2'>Description*</label>
                 <textarea 

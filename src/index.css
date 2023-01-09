@@ -10,26 +10,31 @@
 }
 
 body {
-    height: 100vh;
+    background-image: url('../public/bg-image.png');
 }
 
+
 .Toastify__toast--error {
-    border: 1px solid #EB5757;
+    font-size: small;
+    border: none;
     color: #ac2727 !important;
     border-radius: 5px !important;
     background: #FAE1E2 !important;
 }
 
 .Toastify__toast--success {
-    border: 1px solid #54dd54;
+    font-size: small;
+    border: none;
     color: #259634 !important;
     border-radius: 5px !important;
     background: #e7fae1 !important;
 }
 
-
-@media (max-width: 460px) {
-    .ViewPostButtons {
-        flex-direction: column;
-    }
+.Toastify__toast--warning {
+    font-size: small;
+    border: none;
+    color: #85862a !important;
+    border-radius: 5px !important;
+    background: #f1fcb4 !important;
 }
+

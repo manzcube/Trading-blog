@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import { UserContext } from '../context/Context'
 
 // Firebase
 import { getDocs, collection } from 'firebase/firestore'
@@ -9,8 +10,9 @@ import Post from '../components/Post'
 import SignInBadge from '../components/SignInBadge'
 import { toast } from 'react-toastify'
 
-const SavedPosts = (props) => {
+const SavedPosts = () => {
   const [posts, setPosts] = useState([])
+  const userContext = useContext(UserContext)
 
   const getSortedPosts = (slice) => {
     return slice.sort((a, b) => {
@@ -23,7 +25,7 @@ const SavedPosts = (props) => {
     const getData = async () => {
       try {
         // Check if there is already data posts to avoid inifnite re-rendering
-        if (!posts.length && props.user) { 
+        if (!posts.length && userContext) { 
           const data = await getDocs(collection(db, "posts")) // Get all posts
           const dataArray = data.docs.map(doc => ({ id: doc.id, ...doc.data() })) // Assign id's for posst        
           const sortedArray = getSortedPosts(dataArray)
@@ -34,16 +36,16 @@ const SavedPosts = (props) => {
       }
     }
     getData()
-  }, [props.user, posts.length])
+  }, [userContext, posts.length])
 
   const checkIfSaved = (currentPost) => {
-    return currentPost?.savedBy?.includes(props.user)
+    return currentPost?.savedBy?.includes(userContext)
   }
 
-  return props.user ? (
-    <div className='pb-10 m-10'>
-      <span className='flex w-full font-bold px-10 text-xl my-20'>Saved Posts</span>
-        {posts.map(post => post?.savedBy?.includes(props.user) ? (
+  return userContext ? (
+    <div className='pb-10 flex flex-wrap justify-center'>
+      <span className='flex justify-center uppercase w-full font-bold text-xl mt-10'>Saved Posts</span>
+        {posts.map(post => post?.savedBy?.includes(userContext) ? (
           <Post
             key={post.id}
             postId={post.id}
@@ -52,7 +54,7 @@ const SavedPosts = (props) => {
             date={post.date}
             author={post.author}
             image={post?.imageURL}
-            currentUser={props?.user}
+            currentUser={userContext}
             comments={post.comments}
             savedByCurrentUser={checkIfSaved(post)}
           />

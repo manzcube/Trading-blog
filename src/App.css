@@ -6,3 +6,45 @@ input::file-selector-button {
     margin-right: 1ch;
     color: rgb(8, 8, 8);
 }
+
+
+
+.chatColumn::-webkit-scrollbar {
+    width: 10px;
+}
+
+.chatPage {
+    width: 100%;
+    max-width: 100ch;
+    height: 85ch;
+    position: absolute;
+}
+
+.chatPage > div::-webkit-scrollbar {
+    background-color: rgb(210, 208, 208);
+    width: .5ch;
+    border-radius: 10px;
+}
+
+@media screen and (max-height: 600px) {
+    .chatPage {
+        height: 50ch;
+    }
+}
+
+@media screen and (max-width: 1250px) {
+    .chatStuff {
+        display: none;
+    }
+}
+
+@media (max-width: 460px) {
+    .ViewPostButtons {
+        position: relative;
+        margin-top: 5ch;
+        margin-bottom: -7ch;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+}

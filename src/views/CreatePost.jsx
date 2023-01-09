@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { UserContext } from '../context/Context.js';
+
 import { v4 } from 'uuid';
 
 // Firebase
@@ -12,9 +14,11 @@ import { auth, db, storage } from '../config/firebase-config';
 import SignInBadge from '../components/SignInBadge';
 import Form from '../components/Form';
 
-const CreatePost = (props) => {
+
+const CreatePost = () => {
     const navigate = useNavigate()
     const [picture, setPicture] = useState(null)
+    const userContext = useContext(UserContext)
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -37,26 +41,34 @@ const CreatePost = (props) => {
 
     const onSubmit = async (e) => {
         e.preventDefault() // We prevent de submit
-        const imageRef = ref(storage, `images/${picture.name + v4()}`) // Create img ref and hash fot future URL
-            await uploadBytes(imageRef, picture).then(() => { // Upload the image the firebase storage 
-                getDownloadURL(imageRef).then(url => { // We get the URL of the img we just uploaded
-                    addDoc(collection(db, "posts"), { // Create the post
-                        title,
-                        description,
-                        date: genDate(),
-                        author: props.user,
-                        imageURL: url,
-                        comments: [],
-                        userID: auth.currentUser.uid
-                    }).then(() => {
-                        toast.success('Post created!')  // Notify the user
-                        navigate('/dashboard') // Move to the dashboard
-                    }).catch((err) => toast.error(err.message))    
-                }).catch((err) => toast.error(err.message))  
-            }).catch((err) => toast.error(err.message))  
+        if (!picture) {
+            toast.error('Upload some picture.')
+        } else {
+            try {
+                const imageRef = ref(storage, `images/${picture.name + v4()}`) // Create img ref and hash fot future URL
+                    await uploadBytes(imageRef, picture).then(() => { // Upload the image the firebase storage 
+                        getDownloadURL(imageRef).then(url => { // We get the URL of the img we just uploaded
+                            addDoc(collection(db, "posts"), { // Create the post
+                                title,
+                                description,
+                                date: genDate(),
+                                author: userContext,
+                                imageURL: url,
+                                comments: [],
+                            }).then(async () => {
+                                toast.success('Post created!')  // Notify the user
+                                navigate('/dashboard') // Move to the dashboard                                
+                            }).catch((err) => toast.error(err.message))    
+                        }).catch((err) => toast.error(err.message))  
+                    }).catch((err) => toast.error(err.message))         
+            } catch (err) {
+                toast.error(err.message)
+            }
+        }
+        
     }
 
-  return props?.user ? (
+  return userContext ? (
     <Form 
         onSubmit={onSubmit}
         formTitle='Create a new Post'

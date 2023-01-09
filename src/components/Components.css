@@ -6,3 +6,49 @@
 .btn:active {
     margin-bottom: -8px;
 }
+
+#onSaveHover {
+    display: none;
+}
+
+#onSave {
+    position: relative;
+}
+
+#onSave:hover + #onSaveHover {
+    display: flex !important;
+}
+
+.CHAT {
+    height: 65ch;
+}
+
+@media screen and (max-width: 390px) {
+    .chatInnerDiv {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .singlePostFooter {
+        flex-direction: column;
+    }
+}
+
+
+.hover {
+    border-radius: 10px;
+    color: #25b0df ;
+    background: 
+      linear-gradient(90deg,#25b0df 50%,rgb(255, 255, 255) 0) 
+      var(--_p,100%)/200% no-repeat;
+    -webkit-background-clip: background-color;
+            background-clip: background-color;
+    transition: .4s;
+  }
+  .hover:hover {
+    --_p: 0%;
+    color: white;
+  }
+
+  

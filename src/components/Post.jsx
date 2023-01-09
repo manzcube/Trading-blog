@@ -59,36 +59,38 @@ const Post = (props) => {
             const postRef = doc(db, 'posts', props.postId)
             await updateDoc(postRef, {
                 comments: arrayUnion({ message, author: props.currentUser })
-            })
-            
+            }).then(() => toast.success('comment created!'))  
+            .catch((err) => toast.error(err.message))          
         }        
     }     
 
     return (
-        <>
-            <div className='container max-w-3xl md:h-56 flex flex-row space-y-3 mx-auto mt-20 no-underline rounded-lg md:overflow-hidden shadow-lg bg-white ring-1 ring-slate-900/5'>
+        <div className='flex flex-col items-center'>
+            <div className='container max-w-lg md:h-56 flex flex-row space-y-3 mt-20 mx-10 no-underline rounded-lg md:overflow-hidden shadow-lg bg-white ring-1 ring-slate-900/5'>
                 <div className="md:flex w-full">
                     <a href={`posts/${props.postId}`} className="">
-                        <img src={props.image} alt="" className='h-48 w-full object-cover md:h-full md:w-52 rounded-t-lg md:rounded-l-lg hover:scale-105' />
+                        <img src={props.image} alt="" className='h-52 w-full object-cover md:h-full md:w-80 rounded-md md:rounded-l-lg md:hover:scale-95' />
                     </a>
                     <div className="p-5 max-w-xl w-full flex flex-col h-full md:justify-between">
                         <div className="flex justify-end items-center">
                             <p className='ml-3 text-sm mr-2 xs:mr-0'>{props.date}</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" onClick={savedByCurrentUser ? postToBeUnsaved : postToBeSaved} cursor='pointer' fill="none" viewBox="0 0 24 24" strokeWidth={3.5} stroke="currentColor" className={`w-4 h-4 ${savedByCurrentUser ? "text-red-400" : "text-gray-500"}`}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-                            </svg>
-
+                            <div className='flex-col'>
+                                <svg id="onSave" xmlns="http://www.w3.org/2000/svg" onClick={savedByCurrentUser ? postToBeUnsaved : postToBeSaved} cursor='pointer' fill="none" viewBox="0 0 24 24" strokeWidth={3.5} stroke="currentColor" className={`w-4 h-4 relative active:scale-95 ${savedByCurrentUser ? "text-red-400" : "text-gray-500"}`}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                                </svg>                             
+                                <span id='onSaveHover' className='font-normal mt-3 p-1 pb-1.5 rounded-lg bg-slate-100 text-gray-500 text-xs absolute'>{savedByCurrentUser ? 'undo save' : 'save post'}</span>
+                            </div>
                         </div>
                         <div>
-                            <p className="block mt-1 text-lg leading-tight uppercase tracking-wide font-bold text-black no-underline">
-                                <a href={`posts/${props.postId}`} >
+                            <p className="flex justify-between mt-1 tracking-wide no-underline">
+                                <a href={`posts/${props.postId}`} className='text-lg leading-tight uppercase font-bold text-black'>
                                 {props.title}        
-                                </a>
+                                </a>    
                             </p>
                             <p className="my-2 text-slate-500 h-28 overflow-hidden">{props.description}</p>
                         </div>
                         <div className="flex justify-end bottom-0">
-                            <div className="uppercase tracking-wide text-xs  text-indigo-500 font-semibold">BY {props.author}</div>
+                            <div className="uppercase tracking-wide text-xs text-indigo-500 font-semibold">BY {props.author}</div>
                         </div>                                      
                     </div>
                 </div>                       
@@ -107,7 +109,8 @@ const Post = (props) => {
                 comments
             </button>
             {openComments ? (
-                <div className="container max-w-2xl my-5 mx-auto p-5 flex flex-col rounded border-b shadow-md">
+                <div className="container max-w-2xl my-5 mx-auto p-5 flex flex-col rounded border-b shadow-lg bg-white">
+                    <p className="w-full text-sm font-bold text-gray-700">Comments</p>
                     {comments?.map(comment => (
                         <Comment
                             key={comments.indexOf(comment)}
@@ -128,8 +131,7 @@ const Post = (props) => {
                     </div>                    
                 </div>
             ) : ''}
-            
-        </>
+        </div>
     )
 }
 
