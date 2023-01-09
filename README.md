@@ -30,10 +30,10 @@ Storage to upload all the files, and Hosting to deploy it.
 ![Trading Bros - Brave 1_9_2023 1_00_40 PM](https://user-images.githubusercontent.com/88792194/211307665-8d03ebca-e225-4f75-8d01-294be99fe519.png)
 
 ## Mobile Images (from an iphone)
-<img src="https://user-images.githubusercontent.com/88792194/211308007-4b4fda72-7744-4a21-a39d-080304859214.jpg" width=200px >
-<img src="https://user-images.githubusercontent.com/88792194/211308008-062b8d5f-437a-4648-8119-fcd865bb6dee.jpg" width=200px >
+<img src="https://user-images.githubusercontent.com/88792194/211308007-4b4fda72-7744-4a21-a39d-080304859214.jpg" width=400px >
+<img src="https://user-images.githubusercontent.com/88792194/211308008-062b8d5f-437a-4648-8119-fcd865bb6dee.jpg" width=400px >
 <img src="https://user-images.githubusercontent.com/88792194/211308009-e9bc9508-e187-41ca-baf3-05715e95faa2.jpg" width=200px >
-<img src="https://user-images.githubusercontent.com/88792194/211308011-eb530afc-1bb1-4bff-998b-6360da7bc041.jpg" width=200px >
-<img src="https://user-images.githubusercontent.com/88792194/211308015-92a70ae5-28a7-4227-b68c-9b0d048d09ab.jpg" width=200px >
+<img src="https://user-images.githubusercontent.com/88792194/211308011-eb530afc-1bb1-4bff-998b-6360da7bc041.jpg" width=400px >
+<img src="https://user-images.githubusercontent.com/88792194/211308015-92a70ae5-28a7-4227-b68c-9b0d048d09ab.jpg" width=400px >
 
 
